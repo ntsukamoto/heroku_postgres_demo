@@ -21,3 +21,14 @@ class Entry(db.Model):
 def companylist():
     companies = Entry.query.all() #変更
     return render_template('index.html', companies=companies)
+
+@app.route('/post', methods=['POST'])
+def add_company():
+    company = Entry()
+    company.company_name = request.form['name']
+    company.type = request.form['type']
+    company.phone = request.form['phone']
+    company.address = request.form['address']
+    db.session.add(company)
+    db.session.commit()
+    return redirect(url_for('companylist'))
